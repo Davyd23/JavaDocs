@@ -1,0 +1,6 @@
+0:0:0:0:0:0:0:1 - - [13/Jul/2016:13:54:01 -0700] "POST /login HTTP/1.1" 404 - http-bio-8090-exec-1 0
+0:0:0:0:0:0:0:1 - - [13/Jul/2016:13:54:07 -0700] "POST /login HTTP/1.1" 404 - http-bio-8090-exec-2 0
+0:0:0:0:0:0:0:1 - - [13/Jul/2016:13:55:13 -0700] "GET /jsp-app/views/login.jsp HTTP/1.1" 200 416 http-bio-8090-exec-1 871
+0:0:0:0:0:0:0:1 - - [13/Jul/2016:13:55:16 -0700] "POST /jsp-app/login HTTP/1.1" 302 - http-bio-8090-exec-2 7
+0:0:0:0:0:0:0:1 - - [13/Jul/2016:13:55:16 -0700] "GET /views/loginFail.jsp HTTP/1.1" 404 - http-bio-8090-exec-3 0
+0:0:0:0:0:0:0:1 - - [13/Jul/2016:13:55:29 -0700] "POST /jsp-app/login HTTP/1.1" 200 83 http-bio-8090-exec-4 1

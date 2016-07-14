@@ -1,0 +1,69 @@
+<web-app version="3.1"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+		                     http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
+  <display-name>Archetype Created Web Application</display-name>
+
+    <filter>
+        <filter-name>logHeaders</filter-name>
+        <filter-class>ro.teamnet.zth.web.HeadersLogFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>logHeaders</filter-name>
+        <servlet-name>HelloWorld</servlet-name>
+    </filter-mapping>
+
+
+    <servlet>
+        <servlet-name>HelloWorld</servlet-name>
+        <servlet-class>ro.teamnet.zth.web.HelloWorldServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HelloWorld</servlet-name>
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>HelloWorldForward</servlet-name>
+        <servlet-class>ro.teamnet.zth.web.HelloWorldServletForward</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HelloWorldForward</servlet-name>
+        <url-pattern>/forward</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>HttpServletInclude</servlet-name>
+        <servlet-class>ro.teamnet.zth.web.HttpServletInclude</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HttpServletInclude</servlet-name>
+        <url-pattern>/include</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>HttpServletIncluded</servlet-name>
+        <servlet-class>ro.teamnet.zth.web.HttpServletIncluded</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HttpServletIncluded</servlet-name>
+        <url-pattern>/included</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>HttpSessionZTH</servlet-name>
+        <servlet-class>ro.teamnet.zth.web.HttpSessionZTH</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HttpSessionZTH</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>/index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>
