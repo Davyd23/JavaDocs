@@ -1,7 +1,9 @@
 package ro.teamnet.zth.servlets;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import ro.teamnet.zth.api.annotations.MyController;
 import ro.teamnet.zth.api.annotations.MyRequestMethod;
+import ro.teamnet.zth.api.annotations.MyRequestParam;
 import ro.teamnet.zth.appl.controller.DepartmentController;
 import ro.teamnet.zth.appl.controller.EmployeeController;
 import ro.teamnet.zth.fmk.AnnotationScanUtils;
@@ -14,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.lang.reflect.Parameter;
+import java.util.*;
 
 /**
  * Created by user on 7/14/2016.
@@ -52,6 +54,7 @@ public class DispatcherServlet extends HttpServlet{
                            methodAttributes.setControllerClass(controller.getName());
                            methodAttributes.setMethodName(controllerMethod.getName());
                            methodAttributes.setMethodType(myRequestMethod.methodType());
+                           methodAttributes.setParameterTypes(controllerMethod.getParameterTypes());
 
                            allowedMethods.put(urlPath,methodAttributes);
 
@@ -89,7 +92,7 @@ public class DispatcherServlet extends HttpServlet{
         }
     }
 
-    private Object dispatch(HttpServletRequest req, HttpServletResponse resp) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    private Object dispatch(HttpServletRequest req, HttpServletResponse resp) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, IOException {
 
         String path=req.getPathInfo(); // it gets everything after mvc ( from )
 
@@ -101,13 +104,33 @@ public class DispatcherServlet extends HttpServlet{
         Class<?> controllerClass=Class.forName(controllerName);
         Object instance=controllerClass.newInstance();
 
-        Method method=controllerClass.getMethod(methodAttributes.getMethodName());
+        Method method=controllerClass.getMethod(methodAttributes.getMethodName(),
+                methodAttributes.getParameterTypes());
 
-        return method.invoke(instance);
+        Parameter[] parameters=method.getParameters();
+        List<Object> parameterValues=new ArrayList<>();
+
+        for(Parameter parameter:parameters){
+            if(parameter.isAnnotationPresent(MyRequestParam.class)){
+
+                MyRequestParam annotation =parameter.getAnnotation(MyRequestParam.class);
+                String name=annotation.name();
+                String requestParamValue=req.getParameter(name);
+
+                Class<?> type = parameter.getType();//tipul de date pe care il introducem
+                Object requestParamObject=new ObjectMapper().readValue(requestParamValue,type); //it converts from string to data type
+                parameterValues.add(requestParamObject);
+
+
+            }
+        }
+
+        return method.invoke(instance,parameterValues.toArray());
     }
 
     private void reply(Object response,HttpServletRequest req, HttpServletResponse resp)throws IOException{
-        resp.getWriter().write(response.toString());
+        ObjectMapper mapper=new ObjectMapper();
+        resp.getWriter().write(mapper.writeValueAsString(response));
     }
 
     private void sendExceptionError(Exception ex,HttpServletRequest req, HttpServletResponse resp){

@@ -10,7 +10,7 @@ public class Location {
     @Id(name = "location_id")
     private Long id;
 
-    @Column(name = "street_address")
+    @Column(name = "street_adress")
     private String streetAddress;
 
     @Column(name = "postal_code")

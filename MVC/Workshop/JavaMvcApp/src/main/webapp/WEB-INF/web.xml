@@ -15,4 +15,12 @@
         <url-pattern>/mvc/*</url-pattern>
     </servlet-mapping>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-jaxrs</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+    </dependencies>
+
 </web-app>
