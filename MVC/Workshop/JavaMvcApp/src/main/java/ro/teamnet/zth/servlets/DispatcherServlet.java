@@ -1,7 +1,9 @@
 package ro.teamnet.zth.servlets;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.util.BufferRecycler;
 import ro.teamnet.zth.api.annotations.MyController;
+import ro.teamnet.zth.api.annotations.MyObject;
 import ro.teamnet.zth.api.annotations.MyRequestMethod;
 import ro.teamnet.zth.api.annotations.MyRequestParam;
 import ro.teamnet.zth.appl.controller.DepartmentController;
@@ -13,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -77,7 +80,12 @@ public class DispatcherServlet extends HttpServlet{
         dispatchReply("POST",req,resp);
     }
 
-    private void dispatchReply(String identificator,HttpServletRequest req,HttpServletResponse resp){
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        dispatchReply("DELETE",req,resp);
+    }
+
+    private void dispatchReply(String identificator, HttpServletRequest req, HttpServletResponse resp){
         Object response=null;
         try {
             response = dispatch(req, resp);
@@ -121,7 +129,12 @@ public class DispatcherServlet extends HttpServlet{
                 Object requestParamObject=new ObjectMapper().readValue(requestParamValue,type); //it converts from string to data type
                 parameterValues.add(requestParamObject);
 
+            }else if(parameter.isAnnotationPresent(MyObject.class)){
 
+                BufferedReader br=req.getReader();
+                Object requestParamObject=new ObjectMapper().readValue(br,parameter.getType());
+
+                parameterValues.add(requestParamObject);
             }
         }
 

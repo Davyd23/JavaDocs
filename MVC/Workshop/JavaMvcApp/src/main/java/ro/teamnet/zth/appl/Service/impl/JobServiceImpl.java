@@ -16,4 +16,22 @@ public class JobServiceImpl implements JobService {
     public List<Job> getAllJobs() {
         return new JobDao().getAllJobs();
     }
+
+    @Override
+    public Job getJob(String id) {
+        return new JobDao().getJobById(id);
+    }
+
+    @Override
+    public Job deleteJob(String id) {
+        Job job=getJob(id);
+        new JobDao().deleteJob(job);
+
+        return job;
+    }
+
+    @Override
+    public Job addJob(Job job) {
+        return new JobDao().insertJob(job);
+    }
 }

@@ -10,4 +10,11 @@ import java.util.List;
 public interface JobService {
 
     public List<Job> getAllJobs();
+
+    public Job getJob(String id);
+
+    public Job deleteJob(String id);
+
+    public Job addJob(Job job);
+
 }
